@@ -14,7 +14,7 @@ public class Exit {
 	private static final int IN = 11;
 	private static final int OUT = 12;
 	
-	public final String[] dirName = {
+	public String[] dirName = {
 			"UNDEFINED", 
 			"NORTH", 
 			"NORTHEAST", 
@@ -37,7 +37,7 @@ public class Exit {
 	public Exit() {
 		this.direction = Exit.UNDEFINED;
 		this.leadsTo = null;
-		this.dirName[] = dirName[UNDEFINED];
+		this.dirName = null;
 	}
 
 	//Full constructor

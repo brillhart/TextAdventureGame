@@ -50,4 +50,8 @@ public class Menu {
 		out.flush();
 	}
 
+	public String getPlayerNameFromInput() {
+		String playerName = in.nextLine();
+		return playerName;
+	}
 }
