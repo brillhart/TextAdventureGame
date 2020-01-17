@@ -4,41 +4,38 @@ DROP TABLE IF EXISTS backpack;
 DROP TABLE IF EXISTS weapons;
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS collectables;
-DROP TABLE IF EXISTS treasurechests;
+DROP TABLE IF EXISTS treasure_chests;
 DROP TABLE IF EXISTS monsters;
 DROP TABLE IF EXISTS npcs;
 
 
-DROP SEQUENCE IF EXISTS reservation_reservation_id_seq;
-DROP SEQUENCE IF EXISTS site_site_id_seq;
-DROP SEQUENCE IF EXISTS campground_campground_id_seq;
-DROP SEQUENCE IF EXISTS park_park_id_seq;
+DROP SEQUENCE IF EXISTS players_player_id_seq;
 
-CREATE SEQUENCE park_park_id_seq
+CREATE SEQUENCE players_player_id_seq
   INCREMENT BY 1
   NO MAXVALUE
   NO MINVALUE
   CACHE 1;
 
+
 CREATE TABLE players (
-  park_id integer DEFAULT nextval('park_park_id_seq'::regclass) NOT NULL,
-  name varchar(80) NOT NULL,          -- Name of the player/character
-  health integer(100) NOT NULL,       -- Health of character at last save
-  location varchar(50) NOT NULL,      -- Location of player at last save
+  player_id integer DEFAULT nextval('players_player_id_seq'::regclass) NOT NULL,
+  player_name varchar(80) NOT NULL,          -- Name of the player/character
+  health integer NOT NULL,       -- Health of character at last save
+  damage integer, 
+  experience int NOT NULL,
+  level int NOT NULL,
+  player_location integer NOT NULL,      -- Location of player at last save
   save_date date NOT NULL,             -- Date last save was created
   play_time varchar(50) NOT NULL,          -- Total elapsed play time
   score integer NOT NULL
+  
 );
 
-CREATE SEQUENCE campground_campground_id_seq
-  INCREMENT BY 1
-  NO MAXVALUE
-  NO MINVALUE
-  CACHE 1;
   
 CREATE TABLE locations (
   location_id integer NOT NULL,
-  name varchar(100) NOT NULL,
+  location_name varchar(100) NOT NULL,
   treasures integer[],
   monsters integer[],
   entryways integer[] NOT NULL,
@@ -53,30 +50,69 @@ CREATE TABLE backpack (
   
 );
 
-
-CREATE TABLE site (
-  site_id integer DEFAULT nextval('site_site_id_seq'::regclass) NOT NULL,
-  campground_id integer NOT NULL,
-  site_number integer NOT NULL,                   -- Site numbers are
-  max_occupancy integer NOT NULL DEFAULT 6,       -- Sites are limited to 6 people, however some sites are "doubled" (12 people)
-  accessible boolean NOT NULL DEFAULT FALSE,      -- Accessible site, reserved for campers with disabilities
-  max_rv_length integer NOT NULL DEFAULT 0,       -- RVs/Trailers not permitted if length is 0
-  utilities boolean NOT NULL DEFAULT FALSE,       -- Electricity, running water available.
-  CONSTRAINT pk_site_site_number_campground_id PRIMARY KEY (site_id)
+CREATE TABLE weapons (
+  weapon_name varchar(100) NOT NULL,
+  description varchar(500) NOT NULL, 
+  damage integer NOT NULL,
+  durability integer NOT NULL, 
+  has_magic boolean, 
+  has_curse boolean 
 );
 
-CREATE SEQUENCE reservation_reservation_id_seq
-  INCREMENT BY 1
-  NO MAXVALUE
-  NO MINVALUE
-  CACHE 1;
-
-CREATE TABLE reservation (
-  reservation_id integer DEFAULT nextval('reservation_reservation_id_seq'::regclass) NOT NULL,
-  site_id integer NOT NULL,
-  name varChar(80) NOT NULL,
-  from_date date NOT NULL,
-  to_date date NOT NULL,
-  create_date date NOT NULL DEFAULT now(),
-  CONSTRAINT pk_reservation_reservation_id PRIMARY KEY (reservation_id)
+CREATE TABLE items (
+  item_id integer NOT NULL,
+  name varchar(100) NOT NULL, 
+  description varchar(500) NOT NULL, 
+  quantity integer NOT NULL,
+  has_damage boolean, 
+  damage integer,
+  has_poison boolean, 
+  poison_damage integer, 
+  has_heal boolean, 
+  heal integer,
+  has_boost boolean, 
+  boost integer 
 );
+
+
+CREATE TABLE collectables (
+  name varchar(100) NOT NULL, 
+  description varchar(500) NOT NULL, 
+  effect varchar(100) NOT NULL, 
+  effect_amount integer 
+);
+
+CREATE TABLE treasure_chests ( 
+  name varchar(100), 
+  location integer NOT NULL,
+  description varchar(500) NOT NULL,
+  needs_key boolean NOT NULL, 
+  items integer[],
+  collectables integer[]
+);
+
+CREATE TABLE monsters (
+  name varchar(100) NOT NULL, 
+  description varchar(500) NOT NULL,
+  health integer NOT NULL,
+  damage integer NOT NULL, 
+  defense integer NOT NULL, 
+  weakness varchar(100), 
+  magic_effect varchar(100)
+);
+
+CREATE TABLE npcs (
+  name varchar(100) NOT NULL, 
+  description varchar(500) NOT NULL,
+  greeting varchar(500),
+  health integer NOT NULL,
+  damage integer NOT NULL, 
+  defense integer NOT NULL, 
+  weakness varchar(100), 
+  magic_effect varchar(100), 
+  sale_items integer[], 
+  advice varchar(500), 
+  money integer
+);
+
+INSERT into locations (location_id, location_name, entryways, description) values (1, 'Wooded Path', '{2, 3, 4}', 'You are standing on a dirt path, with dark pine forests surrounding you. Your head throbs, and you cannot remember how you got here. Behind you, a sheer cliff face into blackness. Ahead lies a fork in the path. To the left, a twisting path leads up rocky mountains to what looks like a massive glass building through the clearing in the trees. To the right, the path leads down into the depths of the woods, with what sounds like water rushing swiftly through a canyon.');

@@ -1,5 +1,7 @@
 package com.adventuregame.adventuregame;
 
+import com.adventuregame.adventuregame.Wanderer.Wanderer;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -54,4 +56,11 @@ public class Menu {
 		String playerName = in.nextLine();
 		return playerName;
 	}
+
+	public String getInputFromPlayer() {
+		String playerInput = in.nextLine();
+		return playerInput;						// use this to interact with a player input interpreter that decides what action to perform
+	}
+
+
 }
