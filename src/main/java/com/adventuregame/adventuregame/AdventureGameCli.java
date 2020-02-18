@@ -27,8 +27,8 @@ public class AdventureGameCli {
 	private  WandererDAO wandererDAO;
 
 	private  Menu gameMenu;
-	public  Wanderer wanderer = new Wanderer();
-	public  NewGame newGame = new NewGame();
+	private  Wanderer wanderer = new Wanderer();
+	private  NewGame newGame = new NewGame();
 
 	JdbcTemplate jdbcTemplate = new JdbcTemplate();
 	
@@ -49,7 +49,7 @@ public class AdventureGameCli {
 			switch(choice) {
 			case MAIN_MENU_OPTION_START_NEW_GAME:
 				displayNewGameMenu();
-				displayScenario();
+				displayScenario(wanderer);
 			case MAIN_MENU_OPTION_CONTINUE_GAME:
 				displayContinueGameMenu();
 			case MAIN_MENU_OPTION_VIEW_HIGH_SCORE:
@@ -66,8 +66,8 @@ public class AdventureGameCli {
 	//Methods used in main processing loop
 	
 	public void endGame() {
-		//displayScore method
-		//saveGame method
+		//TODO displayScore method
+		//TODO saveGame method
 		System.out.println("Safe travels fellow adventurer!");
 	}
 
